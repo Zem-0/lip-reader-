@@ -1,4 +1,3 @@
-import numpy as np
 import streamlit as st
 import tensorflow as tf
 import os
@@ -53,7 +52,7 @@ else:
 
         selected_video = st.selectbox('Choose video', options, index=options.index(st.session_state.selected_video))
 
-        # Clear cache if video selection changes
+        # Update session state and rerun script if video selection changes
         if selected_video != st.session_state.selected_video:
             st.session_state.selected_video = selected_video
             st.experimental_rerun()
@@ -67,10 +66,11 @@ else:
         # Render the video and model predictions
         with col1:
             st.info('The video below displays the converted video in mp4 format')
-            os.system(f'ffmpeg -i {file_path} -vcodec libx264 test_video.mp4 -y')
+            output_video_path = 'test_video.mp4'
+            os.system(f'ffmpeg -i {file_path} -vcodec libx264 {output_video_path} -y')
 
             # Rendering inside of the app
-            with open('test_video.mp4', 'rb') as video:
+            with open(output_video_path, 'rb') as video:
                 video_bytes = video.read()
             st.video(video_bytes)
 
