@@ -6,19 +6,29 @@ from utils import load_data, num_to_char
 from modelutil import load_model
 
 st.set_page_config(layout='wide')
+data_dir = os.path.join(os.path.dirname(__file__), '..', 'data', 's1')
+options = os.listdir(data_dir)
 
 # Setup the sidebar
-with st.sidebar: 
-    st.image('https://www.onepointltd.com/wp-content/uploads/2020/03/inno2.png')
+with st.sidebar:
+    st.image('logoipsum-247.svg')
     st.title('Lip Reader')
     st.info('This application is originally developed from the LipNet deep learning model.')
-st.title('Lip Reader')
-st.info('This application is originally developed from the LipNet deep learning model.')
+    selected_video = st.selectbox('Choose video', options)
 
-st.title('LipNet Full Stack App')
+# Main content
+col1, col2 = st.columns([2,3])
+with col1:
+    st.image('logoipsum-247.svg',width=100)
+    st.title('LipReader App')
 
-# Define the data directory path
-data_dir = os.path.join(os.path.dirname(__file__), '..', 'data', 's1')
+
+
+with col2:
+    st.info('This application is originally developed from the LipNet deep learning model.Lipreading is the task of decoding text from the movement of a speakers mouth. Traditional approaches separated the problem into two stages: designing or learning visual features, and prediction.LipNet achieves 95.2% accuracy in sentence-level, overlapped speaker split task, outperforming experienced human lipreaders and the previous 86.4% word-level state-of-the-art accuracy ',icon="ℹ️")
+
+
+
 
 # Check if the data directory exists
 if not os.path.exists(data_dir):
@@ -28,7 +38,7 @@ else:
     options = os.listdir(data_dir)
     
     if options:
-        selected_video = st.selectbox('Choose video', options)
+        #elected_video = st.selectbox('Choose video', options)
 
         # Generate two columns 
         col1, col2 = st.columns(2)
