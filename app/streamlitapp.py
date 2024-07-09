@@ -2,7 +2,7 @@ import streamlit as st
 import tensorflow as tf
 import os
 import imageio
-from utils import load_data, num_to_char
+from utils import load_alignments, load_data, num_to_char,load_video
 from modelutil import load_model
 
 
@@ -56,25 +56,28 @@ else:
                 video_bytes = video.read()
             st.video(video_bytes)
 
-            with col2:
-                st.info('This is all the machine learning model sees when making a prediction')
-                try:
-                    frames, alignments = load_data(file_path, alignments_dir)
-                    #imageio.mimsave('animation.gif', frames, fps=10)
-                    st.image('app/animation.gif', width=400)
+            with col1:
+                
+                video_data = st.cache_data(load_video)(file_path)
+                #imageio.mimsave('animation.gif', video_data, fps=10)
+                
 
-                    st.info('This is the output of the machine learning model as tokens')
-                    model = load_model()
-                    yhat = model.predict(tf.expand_dims(frames, axis=0))
-                    decoder = tf.keras.backend.ctc_decode(yhat, [75], greedy=True)[0][0].numpy()
-                    st.text(decoder)
+        with col2:
+            st.info('This is all the machine learning model sees when making a prediction')
+            alignments_data = st.cache_data(load_alignments)(alignment_path)
+            
+            model = st.cache_data(load_model)()  # Ensure model loading is cached
+            yhat = model.predict(tf.expand_dims(video_data, axis=0))
+            decoder = tf.keras.backend.ctc_decode(yhat, [75], greedy=True)[0][0].numpy()
+            st.text(decoder)
 
-                    # Convert prediction to text
-                    st.info('Decode the raw tokens into words')
-                    converted_prediction = tf.strings.reduce_join(num_to_char(decoder)).numpy().decode('utf-8')
-                    st.text(converted_prediction)
-                except FileNotFoundError as e:
-                    st.error(f"FileNotFoundError: {e}")
+            # Convert prediction to text
+            st.info('Decode the raw tokens into words')
+            converted_prediction = tf.strings.reduce_join(num_to_char(decoder)).numpy().decode('utf-8')
+            st.text(converted_prediction)
+            st.info('This is what the ML model converts the given video')
+            st.image('app/animation.gif', width=500)
 
     else:
         st.warning("No video files found in the data directory.")
+    
