@@ -32,11 +32,11 @@ with st.sidebar:
 # Main content
 col1, col2 = st.columns(2)
 with col1:
-    st.image('logoipsum-247.svg',width=100)
+    st.image('logoipsum-247.svg', width=100)
     st.title('Lip Reader Application')
 
 with col2:
-    st.info('Lipreading is the task of decoding text from the movement of a speakers mouth. Traditional approaches separated the problem into two stages: designing or learning visual features, and prediction. LipNet achieves 95.2% accuracy in sentence-level, overlapped speaker split task, outperforming experienced human lipreaders and the previous 86.4% word-level state-of-the-art accuracy')
+    st.info('Lipreading is the task of decoding text from the movement of a speaker\'s mouth. Traditional approaches separated the problem into two stages: designing or learning visual features, and prediction. LipNet achieves 95.2% accuracy in sentence-level, overlapped speaker split task, outperforming experienced human lipreaders and the previous 86.4% word-level state-of-the-art accuracy')
 
 # Define the data directory paths
 data_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'data', 's1'))
@@ -91,17 +91,18 @@ else:
             decoder = tf.keras.backend.ctc_decode(yhat, [75], greedy=True)[0][0].numpy()
             st.text(decoder)
 
-
-        col3,col4=st.columns(2)
-        with col3:
             # Convert prediction to text
+
+
+        # Display align text excluding first and last word
+        col3, col4 = st.columns(2)
+        with col3:
+            st.info('Original Text (excluding first and last word)')
+            st.text(align_text)
+        with col4:
             st.info('After decoding the tokens we get the predicted text')
             converted_prediction = tf.strings.reduce_join(num_to_char(decoder)).numpy().decode('utf-8')
             st.text(converted_prediction)
-        with col4:
-            st.info('Original Text')
-            st.text(align_text)
-
 
     else:
         st.warning("No video files found in the data directory.")
