@@ -61,7 +61,7 @@ else:
                 try:
                     frames, alignments = load_data(file_path, alignments_dir)
                     #imageio.mimsave('animation.gif', frames, fps=10)
-                    st.image('app\\animation.gif', width=400)
+                    st.image('app/animation.gif', width=400)
 
                     st.info('This is the output of the machine learning model as tokens')
                     model = load_model()
