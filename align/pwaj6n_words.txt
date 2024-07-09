@@ -1,0 +1,8 @@
+sil
+place
+white
+at
+j
+six
+now
+sil

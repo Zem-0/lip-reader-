@@ -1,0 +1,8 @@
+sil
+bin
+blue
+with
+t
+one
+again
+sil

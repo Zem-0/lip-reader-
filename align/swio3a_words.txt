@@ -1,0 +1,8 @@
+sil
+set
+white
+in
+o
+three
+again
+sil

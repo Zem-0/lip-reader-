@@ -1,0 +1,8 @@
+sil
+bin
+green
+at
+a
+six
+now
+sil

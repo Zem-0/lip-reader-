@@ -1,0 +1,8 @@
+sil
+bin
+white
+at
+a
+zero
+now
+sil

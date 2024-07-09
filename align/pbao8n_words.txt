@@ -1,0 +1,8 @@
+sil
+place
+blue
+at
+o
+eight
+now
+sil

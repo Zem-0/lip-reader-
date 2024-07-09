@@ -1,0 +1,8 @@
+sil
+set
+white
+at
+v
+zero
+please
+sil

@@ -1,0 +1,8 @@
+sil
+set
+white
+with
+v
+six
+now
+sil
