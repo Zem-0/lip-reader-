@@ -1,7 +1,6 @@
 import streamlit as st
 import tensorflow as tf
 import os
-import imageio
 from utils import load_video, load_alignments, num_to_char
 from modelutil import load_model
 
@@ -37,6 +36,7 @@ with col2:
 # Define the data directory paths
 data_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'data', 's1'))
 alignments_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'data', 'alignments', 's1'))
+output_dir = 'output'  # Directory where converted MP4 videos are stored
 
 # Check if the data directory exists
 if not os.path.exists(data_dir):
@@ -60,26 +60,23 @@ else:
         # Generate two columns 
         col1, col2 = st.columns(2)
 
-        file_path = os.path.join(data_dir, selected_video)
-        alignment_path = os.path.join(alignments_dir, f"{selected_video.split('.')[0]}.align")
+        # Construct the paths for the selected video files
+        mpg_file_path = os.path.join(data_dir, selected_video)
+        mp4_file_path = os.path.join(output_dir, f"{selected_video.split('.')[0]}.mp4")  # Assume MP4 conversion naming convention
 
         # Render the video and model predictions
         with col1:
-            st.info('The video below displays the converted video in mp4 format')
-            video_data = load_video(file_path)
-            #imageio.mimsave('animation.gif', video_data, fps=10)
-            st.image('app/animation.gif', width=400)
-            st.info('The video below displays the converted video in mp4 format')
-            os.system(f'ffmpeg -i {file_path} -vcodec libx264 test_video.mp4 -y')
-
-            # Rendering inside of the app
-            with open('test_video.mp4', 'rb') as video:
-                video_bytes = video.read()
-            st.video(video_bytes)
-
+            st.info('The video below displays the converted video in MP4 format')
+            if os.path.exists(mp4_file_path):
+                st.video(mp4_file_path)
+            else:
+                st.error(f"Video file '{mp4_file_path}' not found. Please convert the selected video to MP4 format.")
 
         with col2:
             st.info('This is all the machine learning model sees when making a prediction')
+            alignment_path = os.path.join(alignments_dir, f"{selected_video.split('.')[0]}.align")
+
+            video_data = load_video(mpg_file_path)
             alignments_data = load_alignments(alignment_path)
             
             model = load_model()
