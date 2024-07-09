@@ -1,6 +1,7 @@
 import tensorflow as tf
 from typing import List
 import cv2
+import streamlit as st
 import os 
 
 vocab = [x for x in "abcdefghijklmnopqrstuvwxyz'?!123456789 "]
@@ -25,7 +26,7 @@ def load_video(path:str) -> List[float]:
     return tf.cast((frames - mean), tf.float32) / std
     
 def load_alignments(path:str) -> List[str]: 
-    #print(path)
+    st.write(path)
     with open(path, 'r') as f: 
         lines = f.readlines() 
     tokens = []

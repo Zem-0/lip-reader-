@@ -7,6 +7,7 @@ from modelutil import load_model
 
 st.set_page_config(layout='wide')
 data_dir = os.path.join(os.path.dirname(__file__), '..', 'data', 's1')
+alignments_dir = os.path.join(os.path.dirname(__file__), '..', 'data', 'alignments', 's1')
 options = os.listdir(data_dir)
 
 # Setup the sidebar
@@ -28,9 +29,6 @@ with col1:
 with col2:
     st.info('This application is originally developed from the LipNet deep learning model.Lipreading is the task of decoding text from the movement of a speakers mouth. Traditional approaches separated the problem into two stages: designing or learning visual features, and prediction.LipNet achieves 95.2% accuracy in sentence-level, overlapped speaker split task, outperforming experienced human lipreaders and the previous 86.4% word-level state-of-the-art accuracy ',icon="ℹ️")
 
-
-
-
 # Check if the data directory exists
 if not os.path.exists(data_dir):
     st.error(f"The data directory {data_dir} does not exist.")
@@ -45,6 +43,7 @@ else:
         col1, col2 = st.columns(2)
 
         file_path = os.path.join(data_dir, selected_video)
+        alignment_path = os.path.join(alignments_dir, f"{selected_video.split('.')[0]}.align")
 
         # Rendering the video 
         with col1:
