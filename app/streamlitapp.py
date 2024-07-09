@@ -1,3 +1,4 @@
+import numpy as np
 import streamlit as st
 import tensorflow as tf
 import os
@@ -24,10 +25,6 @@ with st.sidebar:
     st.title('Lip Reader')
     st.info('This application is originally developed from the LipNet deep learning model.')
 
-# Initialize session state if not initialized
-if 'selected_video' not in st.session_state:
-    st.session_state.selected_video = None
-
 # Main content
 col1, col2 = st.columns(2)
 with col1:
@@ -51,12 +48,12 @@ else:
     
     if options:
         # Use session state to track selected video
-        if st.session_state.selected_video is None:
+        if 'selected_video' not in st.session_state:
             st.session_state.selected_video = options[0]
 
         selected_video = st.selectbox('Choose video', options, index=options.index(st.session_state.selected_video))
 
-        # Update selected video and clear cache if video selection changes
+        # Clear cache if video selection changes
         if selected_video != st.session_state.selected_video:
             st.session_state.selected_video = selected_video
             st.experimental_rerun()
@@ -70,21 +67,12 @@ else:
         # Render the video and model predictions
         with col1:
             st.info('The video below displays the converted video in mp4 format')
+            os.system(f'ffmpeg -i {file_path} -vcodec libx264 test_video.mp4 -y')
 
-            # Convert video using ffmpeg
-            video_output_path = f'test_video_{selected_video.split(".")[0]}.mp4'
-            if not os.path.exists(video_output_path):
-                cmd = f'ffmpeg -i "{file_path}" -vcodec libx264 "{video_output_path}" -y'
-                st.info(f"Executing command: {cmd}")  # Add logging
-                os.system(cmd)
-
-            # Display the video
-            try:
-                with open(video_output_path, 'rb') as video:
-                    video_bytes = video.read()
-                st.video(video_bytes)
-            except FileNotFoundError:
-                st.error(f"Video file not found: {video_output_path}")
+            # Rendering inside of the app
+            with open('test_video.mp4', 'rb') as video:
+                video_bytes = video.read()
+            st.video(video_bytes)
 
         with col2:
             st.info('This is all the machine learning model sees when making a prediction')
