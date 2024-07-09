@@ -1,3 +1,4 @@
+import streamlit as st
 import tensorflow as tf
 import cv2
 import os 
@@ -8,7 +9,7 @@ char_to_num = tf.keras.layers.StringLookup(vocabulary=vocab, oov_token="")
 num_to_char = tf.keras.layers.StringLookup(
     vocabulary=char_to_num.get_vocabulary(), oov_token="", invert=True
 )
-
+@st.cache(allow_output_mutation=True)
 def load_video(path:str) -> tf.Tensor: 
     cap = cv2.VideoCapture(path)
     frames = []
@@ -21,7 +22,7 @@ def load_video(path:str) -> tf.Tensor:
     mean = tf.math.reduce_mean(frames)
     std = tf.math.reduce_std(tf.cast(frames, tf.float32))
     return tf.cast((frames - mean), tf.float32) / std
-    
+@st.cache(allow_output_mutation=True)   
 def load_alignments(path:str) -> tf.Tensor: 
     try:
         with open(path, 'r') as f: 
