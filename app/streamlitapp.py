@@ -1,4 +1,3 @@
-import numpy as np
 import streamlit as st
 import tensorflow as tf
 import os
@@ -67,6 +66,10 @@ else:
         # Render the video and model predictions
         with col1:
             st.info('The video below displays the converted video in mp4 format')
+            video_data = load_video(file_path)
+            #imageio.mimsave('animation.gif', video_data, fps=10)
+            st.image('app/animation.gif', width=400)
+            st.info('The video below displays the converted video in mp4 format')
             os.system(f'ffmpeg -i {file_path} -vcodec libx264 test_video.mp4 -y')
 
             # Rendering inside of the app
@@ -74,9 +77,9 @@ else:
                 video_bytes = video.read()
             st.video(video_bytes)
 
+
         with col2:
             st.info('This is all the machine learning model sees when making a prediction')
-            video_data = load_video(file_path)
             alignments_data = load_alignments(alignment_path)
             
             model = load_model()
