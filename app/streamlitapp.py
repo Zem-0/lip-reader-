@@ -81,7 +81,7 @@ else:
 
         with col2:
             st.info('This is all the machine learning model sees when making a prediction')
-            st.image('app\\animation.gif', width=400)
+            st.image('app/animation.gif', width=400)
             st.info('This is the array form of the above gif data use by the model')
 
             video_data = load_video(mpg_file_path)
