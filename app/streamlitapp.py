@@ -74,12 +74,17 @@ else:
             # Convert video using ffmpeg
             video_output_path = f'test_video_{selected_video.split(".")[0]}.mp4'
             if not os.path.exists(video_output_path):
-                os.system(f'ffmpeg -i {file_path} -vcodec libx264 {video_output_path} -y')
+                cmd = f'ffmpeg -i "{file_path}" -vcodec libx264 "{video_output_path}" -y'
+                st.info(f"Executing command: {cmd}")  # Add logging
+                os.system(cmd)
 
             # Display the video
-            with open(video_output_path, 'rb') as video:
-                video_bytes = video.read()
-            st.video(video_bytes)
+            try:
+                with open(video_output_path, 'rb') as video:
+                    video_bytes = video.read()
+                st.video(video_bytes)
+            except FileNotFoundError:
+                st.error(f"Video file not found: {video_output_path}")
 
         with col2:
             st.info('This is all the machine learning model sees when making a prediction')
