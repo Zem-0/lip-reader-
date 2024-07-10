@@ -9,6 +9,34 @@ char_to_num = tf.keras.layers.StringLookup(vocabulary=vocab, oov_token="")
 num_to_char = tf.keras.layers.StringLookup(
     vocabulary=char_to_num.get_vocabulary(), oov_token="", invert=True
 )
+def preprocess_video(video_path, target_shape=(75, 46, 140, 1)):
+    cap = cv2.VideoCapture(video_path)
+    frames = []
+
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            break
+        gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        resized_frame = cv2.resize(gray_frame, (target_shape[2], target_shape[1]))
+        frames.append(resized_frame)
+
+    cap.release()
+
+    # Convert to numpy array and add channel dimension
+    frames = np.array(frames)
+    frames = np.expand_dims(frames, axis=-1)  # Add channel dimension (height, width, 1)
+
+    # Adjust sequence length
+    if frames.shape[0] < target_shape[0]:
+        # If the video has fewer frames, pad with zeros
+        padding = np.zeros((target_shape[0] - frames.shape[0], target_shape[1], target_shape[2], target_shape[3]))
+        frames = np.vstack((frames, padding))
+    else:
+        # If the video has more frames, truncate it
+        frames = frames[:target_shape[0]]
+
+    return np.expand_dims(frames, axis=0)
 def load_video(path:str) -> tf.Tensor: 
     cap = cv2.VideoCapture(path)
     frames = []
