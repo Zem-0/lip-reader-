@@ -5,10 +5,10 @@
 
 The Lip Reading Application leverages advanced deep learning and computer vision techniques to recognize and interpret speech from video footage of lip movements. This innovative tool aims to enhance communication by accurately translating lip motions into text.
 
-![Alt text](URL_or_Path_to_Image)
-![Alt text](URL_or_Path_to_Image)
-![Alt text](URL_or_Path_to_Image)
-![Alt text](URL_or_Path_to_Image)
+![Alt text](https://github.com/Zem-0/lip-reader-/blob/main/Screenshot%202024-07-14%20160715.png)
+![Alt text](https://github.com/Zem-0/lip-reader-/blob/main/Screenshot%202024-07-14%20160756.png)
+<img src="https://github.com/Zem-0/lip-reader-/blob/main/app/animation.gif" alt="Features Diagram" width="600" height="300">
+
 
 
 ## Features
